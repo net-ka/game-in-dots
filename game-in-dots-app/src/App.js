@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import './styles/reset.scss';
-import './App.css';
+import './App.scss';
 
 import Header from './components/header/header';
+import Game from './pages/main';
 
 function App() {
   return (
-    <Header />
+    <Fragment>
+      <Header />
+      <Game />
+    </Fragment>
   );
 }
 
