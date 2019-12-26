@@ -12,7 +12,7 @@ class Game extends Component {
         name: ''
     }
 
-    startGame = async (e) => {
+    drawField = async (e) => {
             e.preventDefault();
         
             const gameMode = e.target.elements.gameMode.value;
@@ -46,16 +46,74 @@ class Game extends Component {
                   name: gamerName
                 });
             }
+      this.startGame();
+    }
 
-            console.log(this.state);
+    startGame() {
+      const message = document.querySelector('.message');
+      const { delay, name } = this.state;
+      const allElemTotal = document.querySelectorAll('.field-cell-select');
+
+      let gameFlow = setInterval(() => {
+        const allElem = document.querySelectorAll('.field-cell-select');
+        const length = allElem.length;
+
+        const random = Math.floor(Math.random() * length);
+        let randomElem = allElem[random];
+
+        if (!randomElem) {
+          clearInterval(gameFlow);
+        }
+
+        randomElem.classList.add('blue');
+
+        randomElem.classList.remove('field-cell-select');
+
+        randomElem.addEventListener('click', function(e) {
+          e.target.classList.add('green');
+          randomElem.classList.add('player-win');
+          e.target.classList.remove('blue');
+        });
+
+        setTimeout(() => {
+          if(randomElem.classList.contains('green')) {
+            return
+          } else {
+            randomElem.classList.add('red');
+            randomElem.classList.add('machine-win');
+            randomElem.classList.remove('blue');
+
+            if (!message.classList.contains('hidden')) {
+              randomElem.classList.remove('red');
+            }
+          }
+        }, delay);
+
+        const machinePoints = document.querySelectorAll('.machine-win');
+        const playerPoints = document.querySelectorAll('.player-win');
+
+        if (machinePoints.length * 2 > allElemTotal.length) {
+          message.innerHTML = 'Machine won';
+          message.classList.remove('hidden');
+          randomElem.classList.remove('blue');
+          clearInterval(gameFlow);
+        }
+
+        if (playerPoints.length * 2 > allElemTotal.length) {
+          message.innerHTML = `${name} won`;
+          message.classList.remove('hidden');
+          randomElem.classList.remove('blue', 'green');
+          clearInterval(gameFlow);
+        }
+      }, delay)
     }
 
     render() {
         return (
             <section className="game-wrapper">
                 <div className="play-wrapper">
-                    <Form startGame={this.startGame} />
-                    <PlayField />
+                    <Form drawField={this.drawField} />
+                    <PlayField {...this.state} />
                 </div>
                 <Leaders />
             </section>

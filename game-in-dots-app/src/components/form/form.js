@@ -16,7 +16,7 @@ import './form.scss'
 //         return (
 const Form = props => (
             <div>
-                <form onSubmit={props.startGame}>
+                <form onSubmit={props.drawField}>
                     <select name="gameMode" defaultValue={'DEFAULT'} >
                         <option value="DEFAULT" disabled hidden>Pick game mode</option>
                         <option value="Easy">Easy</option>

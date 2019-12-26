@@ -1,3 +1,27 @@
 @import '../../styles/variables';
 
+.hidden {
+    visibility: hidden;
+}
 
+table {
+    width: 50vw;
+    height: 50vw;
+    border-collapse: collapse;
+
+    .field-cell {
+        border: 1px solid grey;
+    }
+
+    .blue {
+        background: blue;
+    }
+
+    .green {
+        background: green;
+    }
+
+    .red {
+        background: red;
+    }
+}
