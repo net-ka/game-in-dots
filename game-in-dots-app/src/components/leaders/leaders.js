@@ -1,24 +1,32 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import './leaders.scss'
 
-// const path = 'https://rickandmortyapi.com/api/character';
+const Leaders = props => {
 
-class Leaders extends Component {
+    const { leaders } = props;
+    return (
+        <div className="leaders-wrapper">
+            <p>Leader Board</p>
 
-    state = {
-    }
-
-    componentDidMount() {
-    }
-
-    render() {
+            <table className="leaders-table-wrapper">
+                <thead className='leader-row-head'>
+                    <td>Name</td>
+                    <td>Date</td>
+                </thead>
+                <tbody>
+                    {leaders.map(({ id, winner, date }) => {
+                        return (
+                            <tr key={id} className='leader-row'>
+                                <td className='leader-name'>{winner}</td>
+                                <td className='leader-date'>{date}</td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
         
-        return (
-            <Fragment>
-                
-            </Fragment>
-        )
-    }
+        </div>
+    );
 }
 
 export default Leaders

@@ -1,3 +1,25 @@
 @import '../../styles/variables';
 
+.leaders-wrapper {
+    margin-left: 30px;
 
+    .leaders-table-wrapper {
+        width: 30vw;
+        height: 20vw;
+        margin-top: 20px;
+        border-collapse: collapse;
+        text-align: center;
+
+        .leader-row-head {
+            font-weight: bold;
+        }
+        
+
+        td {
+            border: 1px solid gray;
+            vertical-align: middle;
+        }
+        
+    }
+
+}

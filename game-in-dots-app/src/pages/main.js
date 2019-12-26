@@ -9,7 +9,22 @@ class Game extends Component {
     state = {
         field: null,
         delay: null,
-        name: ''
+        name: '',
+        leaders: null
+    }
+
+    componentDidMount() {
+      const serverURL = 'https://starnavi-frontend-test-task.herokuapp.com/winners';
+
+      fetch(serverURL)
+        .then(response => response.json())
+        .then(leaders => leaders.reverse().slice(0, 5))
+        .then(leaders => this.updateData(leaders))
+        .catch(error => error);
+    }
+
+    updateData(leaders) {
+      this.setState({ leaders });
     }
 
     drawField = async (e) => {
@@ -18,10 +33,8 @@ class Game extends Component {
             const gameMode = e.target.elements.gameMode.value;
             const gamerName = e.target.elements.name.value;
         
-            let api_call;
-            let data;
-            api_call = await fetch(gameMode_path);
-            data = await api_call.json();
+            const api_call = await fetch(gameMode_path);
+            const data = await api_call.json();
         
             if (gameMode === 'Easy') {
               this.setState({
@@ -54,16 +67,14 @@ class Game extends Component {
       const { delay, name } = this.state;
       const allElemTotal = document.querySelectorAll('.field-cell-select');
 
+      const serverCall = this.sendData.bind(this);
+
       let gameFlow = setInterval(() => {
         const allElem = document.querySelectorAll('.field-cell-select');
         const length = allElem.length;
 
         const random = Math.floor(Math.random() * length);
         let randomElem = allElem[random];
-
-        if (!randomElem) {
-          clearInterval(gameFlow);
-        }
 
         randomElem.classList.add('blue');
 
@@ -95,17 +106,60 @@ class Game extends Component {
         if (machinePoints.length * 2 > allElemTotal.length) {
           message.innerHTML = 'Machine won';
           message.classList.remove('hidden');
+          message.classList.add('computer-won');
           randomElem.classList.remove('blue');
           clearInterval(gameFlow);
+          serverCall();
         }
 
         if (playerPoints.length * 2 > allElemTotal.length) {
           message.innerHTML = `${name} won`;
           message.classList.remove('hidden');
+          message.classList.add('player-won');
           randomElem.classList.remove('blue', 'green');
           clearInterval(gameFlow);
+          serverCall();
         }
       }, delay)
+
+      
+    }
+
+    sendData() {
+      const { name } = this.state;
+      const message = document.querySelector('.message');
+      const serverURL = 'https://starnavi-frontend-test-task.herokuapp.com/winners';
+
+      const fullDate = new Date();
+      const date = fullDate.toLocaleString('en',
+                                                {
+                                                  day: 'numeric',
+                                                  month: 'long',
+                                                  year: 'numeric'
+                                                });
+
+      const time = fullDate.toLocaleString().split(',')[1].slice(0, -3);
+
+      let nameServer;
+
+      if (message.classList.contains('computer-won')) {
+        nameServer = 'Computer';
+      }
+
+      if (message.classList.contains('player-won')) {
+        nameServer = name;
+      }
+
+      fetch(serverURL, {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: Math.random(), winner: nameServer, date: `${time}; ${date}`})});
+
+        // leaders.pop().unshift({id: Math.random(), winner: nameServer, date: `${time}; ${date}`});
+        // this.setState({ leaders });
     }
 
     render() {
@@ -115,7 +169,7 @@ class Game extends Component {
                     <Form drawField={this.drawField} />
                     <PlayField {...this.state} />
                 </div>
-                <Leaders />
+                {this.state.leaders && <Leaders {...this.state} />}
             </section>
         )
     }
