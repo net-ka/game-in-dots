@@ -3,17 +3,14 @@ import './play-field.scss'
 
 class PlayField extends Component {
 
-    // state = {
-    //     allCellsArr: Array.from({ length: this.props.field })
-    // }
-
     render() {
         const allCellsArr = Array.from({ length: this.props.field });
 
         return (
             <Fragment>
                 <p className="message hidden">!</p>
-                {this.props.field && <table className="field-wrapper">
+                <div className="field-wrapper">
+                {this.props.field && <table className="field-table">
                     <tbody>
                         {Array.prototype.map.call(allCellsArr, (elem, i) => {
                             return (
@@ -30,6 +27,7 @@ class PlayField extends Component {
                     </tbody>
                 </table>
                 }
+                </div>
             </Fragment>
         )
     }

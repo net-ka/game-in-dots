@@ -24,7 +24,7 @@ const Form = props => (
                         <option value="Hard">Hard</option>
                     </select>
                     <input type="text" name="name" placeholder="Name" autoComplete="off" required></input>
-                    <button>PLAY</button>
+                    <button className="play-button">PLAY</button>
                 </form> 
             </div>
 
