@@ -131,20 +131,19 @@ class Game extends Component {
         serverCall('Computer');
       }
 
-      if (!randomElem && (((machinePoints.length + 1) * 2) > allElemTotal.length)) {
-        message.innerHTML = 'Computer won';
-        message.classList.remove('hidden');
-        clearInterval(gameFlow);
-        serverCall('Computer');
-      }
-      
-      if (!randomElem && ((playerPoints.length * 2) > allElemTotal.length)) {
+      if (!randomElem && (playerPoints.length > machinePoints.length)) {
         message.innerHTML = `${name} won`;
         message.classList.remove('hidden');
         clearInterval(gameFlow);
         serverCall(name);
       }
 
+      if (!randomElem && (playerPoints.length < machinePoints.length)) {
+        message.innerHTML = 'Computer won';
+        message.classList.remove('hidden');
+        clearInterval(gameFlow);
+        serverCall('Computer');
+      }
     }, delay)
   }
 
