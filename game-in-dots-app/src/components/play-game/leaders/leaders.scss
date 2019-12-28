@@ -1,0 +1,37 @@
+@import '../../../styles/variables.scss';
+
+.leaders-wrapper {
+    margin-left: 40px;
+    font-family: $base-font;
+    font-size: 16px;
+
+    p {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .leaders-table-wrapper {
+        width: 30vw;
+        height: 20vw;
+        margin-top: 20px;
+        border-collapse: collapse;
+        text-align: center;
+
+        .leader-row-head {
+            font-weight: bold;
+            height: 50px;
+        }
+        
+
+        td, th {
+            border: 3px solid #f2e4da;
+            vertical-align: middle;
+            border-left: none;
+            border-right: none;
+            background: #d9bdbd;
+        }
+    }
+
+}

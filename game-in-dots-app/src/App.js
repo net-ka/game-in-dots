@@ -1,13 +1,17 @@
-import React from 'react';
-import './App.css';
+import React, { Fragment } from 'react';
+import './styles/reset.scss';
+import './App.scss';
+
+import Header from './components/header/header';
+// import Game from './pages/main';
+import Home from './pages/home';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        
-      </header>
-    </div>
+    <Fragment>
+      <Header />
+      <Home />
+    </Fragment>
   );
 }
 

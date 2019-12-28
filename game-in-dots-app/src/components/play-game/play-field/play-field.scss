@@ -1,0 +1,44 @@
+@import '../../../styles/variables.scss';
+
+.message {
+    font-family: $base-font;
+    font-size: 22px;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.field-wrapper {
+    width: 30vw;
+    height: 30vw;
+    margin: 0 auto;
+
+    table {
+        width: 30vw;
+        height: 30vw;
+        border-collapse: collapse;
+        border: 1px solid grey;
+    
+        .field-cell {
+            border: 1px solid grey;
+        }
+    
+        .blue {
+            background: #525cba;
+        }
+    
+        .player-win {
+            background: #73ba52;
+        }
+    
+        .machine-win {
+            background: #ba5252;
+        }
+    }
+}
+
+

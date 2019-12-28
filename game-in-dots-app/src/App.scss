@@ -1,0 +1,14 @@
+body {
+  background: #f2e4da;
+  color: #4f4b46;
+
+  .game-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .play-wrapper {
+      align-self: flex-start;
+    }
+  }
+}
