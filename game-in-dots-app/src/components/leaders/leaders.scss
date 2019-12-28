@@ -1,7 +1,16 @@
 @import '../../styles/variables';
 
 .leaders-wrapper {
-    margin-left: 30px;
+    margin-left: 40px;
+    font-family: $base-font;
+    font-size: 16px;
+
+    p {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
 
     .leaders-table-wrapper {
         width: 30vw;
@@ -12,14 +21,17 @@
 
         .leader-row-head {
             font-weight: bold;
+            height: 50px;
         }
         
 
-        td, td {
-            border: 1px solid gray;
+        td, th {
+            border: 3px solid #f2e4da;
             vertical-align: middle;
+            border-left: none;
+            border-right: none;
+            background: #d9bdbd;
         }
-        
     }
 
 }

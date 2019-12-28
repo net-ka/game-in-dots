@@ -4,6 +4,7 @@ import Leaders from '../components/leaders/leaders';
 import Form from '../components/form/form';
 
 const gameMode_path = 'https://starnavi-frontend-test-task.herokuapp.com/game-settings'
+let gameFlow;
 
 class Game extends Component {
   state = {
@@ -29,12 +30,13 @@ class Game extends Component {
 
   drawField = async (e) => {
     e.preventDefault();
+    clearInterval(gameFlow);
 
     const fieldTable = document.querySelector('.field-table');
     if (fieldTable) {
       this.setState({
-          field: null
-        });
+        field: null
+      });
     }
 
     const message = document.querySelector('.message');
@@ -80,11 +82,11 @@ class Game extends Component {
   startGame() {
     const message = document.querySelector('.message');
     const { delay, name } = this.state;
-    const allElemTotal = document.querySelectorAll('.field-cell-select');
+    const allElemTotal = document.querySelectorAll('.field-cell');
 
     const serverCall = this.sendData.bind(this);
 
-    let gameFlow = setInterval(() => {
+    gameFlow = setInterval(() => {
       const allElem = document.querySelectorAll('.field-cell-select');
       const length = allElem.length;
 
@@ -92,49 +94,65 @@ class Game extends Component {
       let randomElem = allElem[random];
 
       randomElem.classList.add('blue');
+      
 
       randomElem.classList.remove('field-cell-select');
 
       randomElem.addEventListener('click', function (e) {
-        e.target.classList.add('green');
-        randomElem.classList.add('player-win');
-        e.target.classList.remove('blue');
+        if (e.target.classList.contains('blue')) {
+          e.target.classList.add('player-win');
+          e.target.classList.remove('blue');
+        }
       });
 
+      const playerPoints = document.querySelectorAll('.player-win');
+      const machinePoints = document.querySelectorAll('.machine-win');
+
       setTimeout(() => {
-        if (randomElem.classList.contains('green')) {
-          return
-        } else {
-          randomElem.classList.add('red');
+          if (randomElem.classList.contains('blue')) {
           randomElem.classList.add('machine-win');
           randomElem.classList.remove('blue');
 
-          if (!message.classList.contains('hidden')) {
-            randomElem.classList.remove('red');
+          console.log('LL', machinePoints.length, playerPoints.length);
+
+          if (((machinePoints.length + 2) * 2) === (allElemTotal.length - 1) && (playerPoints.length * 2) === (allElemTotal.length - 1)) {
+            message.innerHTML = 'Computer won';
+            message.classList.remove('hidden');
+            clearInterval(gameFlow);
+            serverCall('Computer');
           }
         }
       }, delay);
 
-      const machinePoints = document.querySelectorAll('.machine-win');
-      const playerPoints = document.querySelectorAll('.player-win');
+      // const playerPoints = document.querySelectorAll('.player-win');
+      // const machinePoints = document.querySelectorAll('.machine-win');
+      console.log('RR', machinePoints.length);
 
-      if (machinePoints.length * 2 > allElemTotal.length) {
-        message.innerHTML = 'Computer won';
-        message.classList.remove('hidden');
-        message.classList.add('computer-won');
-        randomElem.classList.remove('blue');
-        clearInterval(gameFlow);
-        serverCall('Computer');
-      }
-
-      if (playerPoints.length * 2 > allElemTotal.length) {
+      if ((playerPoints.length * 2) > allElemTotal.length) {
         message.innerHTML = `${name} won`;
         message.classList.remove('hidden');
-        message.classList.add('player-won');
-        randomElem.classList.remove('blue', 'green');
+        randomElem.classList.remove('blue', 'player-win', 'machine-win');
         clearInterval(gameFlow);
         serverCall(name);
       }
+
+      if ((((machinePoints.length + 1) * 2) > allElemTotal.length)) {
+        message.innerHTML = 'Computer won';
+        message.classList.remove('hidden');
+        clearInterval(gameFlow);
+        randomElem.classList.remove('blue', 'machine-win');
+        serverCall('Computer');
+      }
+
+      // if (((machinePoints.length) * 2 + 1) === (allElemTotal.length - 1) && (playerPoints.length * 2) === (allElemTotal.length - 1)) {
+      //   message.innerHTML = 'Computer won';
+      //   message.classList.remove('hidden');
+      //   clearInterval(gameFlow);
+      //   message.classList.add('computer-won');
+      //   randomElem.classList.remove('blue');
+      //   serverCall('Computer');
+      // }
+      
     }, delay)
   }
 
@@ -159,13 +177,13 @@ class Game extends Component {
       .then(leaders => this.updateData(leaders))
       .catch(error => error);;
 
-    const playButton= document.querySelector('.play-button');
+    const playButton = document.querySelector('.play-button');
     playButton.innerHTML = 'PLAY AGAIN';
 
     this.setState({
-        delay: null,
-        name: ''
-      });
+      delay: null,
+      name: ''
+    });
 
   }
 

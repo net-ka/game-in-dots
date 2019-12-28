@@ -1,12 +1,12 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import './leaders.scss'
 
 const Leaders = props => {
     const { leaders } = props;
-    
+
     return (
         <div className="leaders-wrapper">
-            <p>Leader Board</p>
+            <p>Leaders Board</p>
 
             <table className="leaders-table-wrapper">
                 <tbody>
