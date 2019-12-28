@@ -93,9 +93,8 @@ class Game extends Component {
       const random = Math.floor(Math.random() * length);
       let randomElem = allElem[random];
 
+      if (randomElem) {
       randomElem.classList.add('blue');
-      
-
       randomElem.classList.remove('field-cell-select');
 
       randomElem.addEventListener('click', function (e) {
@@ -104,31 +103,19 @@ class Game extends Component {
           e.target.classList.remove('blue');
         }
       });
+      }
 
       const playerPoints = document.querySelectorAll('.player-win');
       const machinePoints = document.querySelectorAll('.machine-win');
 
       setTimeout(() => {
-          if (randomElem.classList.contains('blue')) {
+        if (randomElem && randomElem.classList.contains('blue')) {
           randomElem.classList.add('machine-win');
           randomElem.classList.remove('blue');
-
-          console.log('LL', machinePoints.length, playerPoints.length);
-
-          if (((machinePoints.length + 2) * 2) === (allElemTotal.length - 1) && (playerPoints.length * 2) === (allElemTotal.length - 1)) {
-            message.innerHTML = 'Computer won';
-            message.classList.remove('hidden');
-            clearInterval(gameFlow);
-            serverCall('Computer');
-          }
         }
       }, delay);
 
-      // const playerPoints = document.querySelectorAll('.player-win');
-      // const machinePoints = document.querySelectorAll('.machine-win');
-      console.log('RR', machinePoints.length);
-
-      if ((playerPoints.length * 2) > allElemTotal.length) {
+      if (randomElem && ((playerPoints.length * 2) > allElemTotal.length)) {
         message.innerHTML = `${name} won`;
         message.classList.remove('hidden');
         randomElem.classList.remove('blue', 'player-win', 'machine-win');
@@ -136,7 +123,7 @@ class Game extends Component {
         serverCall(name);
       }
 
-      if ((((machinePoints.length + 1) * 2) > allElemTotal.length)) {
+      if (randomElem && (((machinePoints.length + 1) * 2) > allElemTotal.length)) {
         message.innerHTML = 'Computer won';
         message.classList.remove('hidden');
         clearInterval(gameFlow);
@@ -144,15 +131,20 @@ class Game extends Component {
         serverCall('Computer');
       }
 
-      // if (((machinePoints.length) * 2 + 1) === (allElemTotal.length - 1) && (playerPoints.length * 2) === (allElemTotal.length - 1)) {
-      //   message.innerHTML = 'Computer won';
-      //   message.classList.remove('hidden');
-      //   clearInterval(gameFlow);
-      //   message.classList.add('computer-won');
-      //   randomElem.classList.remove('blue');
-      //   serverCall('Computer');
-      // }
+      if (!randomElem && (((machinePoints.length + 1) * 2) > allElemTotal.length)) {
+        message.innerHTML = 'Computer won';
+        message.classList.remove('hidden');
+        clearInterval(gameFlow);
+        serverCall('Computer');
+      }
       
+      if (!randomElem && ((playerPoints.length * 2) > allElemTotal.length)) {
+        message.innerHTML = `${name} won`;
+        message.classList.remove('hidden');
+        clearInterval(gameFlow);
+        serverCall(name);
+      }
+
     }, delay)
   }
 
