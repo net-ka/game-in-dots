@@ -10,10 +10,10 @@ const PlayField = props => {
             <div className="field-wrapper">
                 {props.field && <table className="field-table">
                     <tbody>
-                        {Array.prototype.map.call(allCellsArr, (elem, i) => {
+                        {allCellsArr.map((elem, i) => {
                             return (
                                 <tr key={`${i}tr`}>
-                                    {Array.prototype.map.call(allCellsArr, (elem, k) => {
+                                    {allCellsArr.map((elem, k) => {
                                         return (
                                             <td key={`${k}td${i}`} className='field-cell field-cell-select'>
                                             </td>

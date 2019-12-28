@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import PlayField from '../components/play-field/play-field';
-import Leaders from '../components/leaders/leaders';
-import Form from '../components/form/form';
+import PlayField from './play-field/play-field';
+import Leaders from './leaders/leaders';
+import Form from './form/form';
 
 const gameMode_path = 'https://starnavi-frontend-test-task.herokuapp.com/game-settings'
 let gameFlow;
@@ -108,6 +108,20 @@ class Game extends Component {
       const playerPoints = document.querySelectorAll('.player-win');
       const machinePoints = document.querySelectorAll('.machine-win');
 
+      if (!randomElem && (playerPoints.length > machinePoints.length)) {
+        message.innerHTML = `${name} won`;
+        message.classList.remove('hidden');
+        clearInterval(gameFlow);
+        serverCall(name);
+      }
+
+      if (!randomElem && (playerPoints.length < machinePoints.length)) {
+        message.innerHTML = 'Computer won';
+        message.classList.remove('hidden');
+        clearInterval(gameFlow);
+        serverCall('Computer');
+      }
+
       setTimeout(() => {
         if (randomElem && randomElem.classList.contains('blue')) {
           randomElem.classList.add('machine-win');
@@ -128,20 +142,6 @@ class Game extends Component {
         message.classList.remove('hidden');
         clearInterval(gameFlow);
         randomElem.classList.remove('blue', 'machine-win');
-        serverCall('Computer');
-      }
-
-      if (!randomElem && (playerPoints.length > machinePoints.length)) {
-        message.innerHTML = `${name} won`;
-        message.classList.remove('hidden');
-        clearInterval(gameFlow);
-        serverCall(name);
-      }
-
-      if (!randomElem && (playerPoints.length < machinePoints.length)) {
-        message.innerHTML = 'Computer won';
-        message.classList.remove('hidden');
-        clearInterval(gameFlow);
         serverCall('Computer');
       }
     }, delay)
